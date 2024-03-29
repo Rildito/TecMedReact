@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import clienteAxios from '../config/axios';
+import CryptoJS from "crypto-js"
 
 
 const ProyContext = createContext()
@@ -344,6 +345,7 @@ const ProyProvider = ({ children }) => {
             })
             toast.success(data.message)
             setPedido([])
+            return true
         } catch (error) {
             console.log(error)
             setErrores(Object.values(error?.response?.data?.errors || []))
@@ -413,7 +415,6 @@ const ProyProvider = ({ children }) => {
     }
 
     const obtenerPrestamo = async id => {
-        console.log(id)
         setCargandoModal(true);
         const token = localStorage.getItem('AUTH_TOKEN')
         try {
@@ -467,6 +468,29 @@ const ProyProvider = ({ children }) => {
             setCargando(false);
         }
     }
+
+    const crearUsuario = async (datos, setErrores) => {
+        const token = localStorage.getItem('AUTH_TOKEN')
+        try {
+            setCargando(true);
+            const { data } = await clienteAxios.post(`/api/registroUsuario`, datos, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            toast.success(data.message)
+            return true
+        } catch (error) {
+            console.log(error)
+            setErrores(Object.values(error?.response?.data?.errors || []))
+            document.getElementById('formRegistro').scrollIntoView({top:0, behavior:'smooth'})
+        } finally {
+            setCargando(false);
+        }
+
+    }
+
     const editarUsuario = async (datos, setErrores) => {
         const token = localStorage.getItem('AUTH_TOKEN')
         try {
@@ -879,7 +903,9 @@ const ProyProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        setUsuarioLogin(JSON.parse(localStorage.getItem('usuario')))
+        const informacionDesencriptada = CryptoJS.AES.decrypt(localStorage.getItem('usuario'),'secret_key')
+        const usuarioJSON = informacionDesencriptada.toString(CryptoJS.enc.Utf8)
+        setUsuarioLogin(JSON.parse(usuarioJSON))
     }, [])
 
 
@@ -926,6 +952,7 @@ const ProyProvider = ({ children }) => {
             crearMateria,
             crearMaterial,
             crearUnidad,
+            crearUsuario,
             confirmarEliminarCorrespondencia,
             obtenerMaterialId,
             changeStateModalCajaChica,

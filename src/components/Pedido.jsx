@@ -13,6 +13,9 @@ export default function Pedido({ nombre, cantidad, id }) {
                     // console.log("Enviando id", id, cantidad)
                     changeStateModalMaterial()
                     obtenerMaterialId(id, cantidad)
+                    if (window.innerWidth <= 639) {
+                        changeViewMenu()
+                    }
                 }}
                 >
 

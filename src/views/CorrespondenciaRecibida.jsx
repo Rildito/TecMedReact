@@ -85,11 +85,19 @@ export default function CorrespondenciaRecibida() {
             if (result.isConfirmed) {
                 const mostrarRespuesta = async () => {
                     const respuesta = await eliminarCorrespondencia(id);
-                    Swal.fire({
-                        title: "Eliminado!",
-                        text: respuesta,
-                        icon: "success"
-                    });
+                    if (Boolean(respuesta)) {
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: respuesta,
+                            icon: "success"
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "Error",
+                            title: "Oops...ocurrio un error",
+                            text: "Fallo en el servidor!",
+                        });
+                    }
                 }
                 mostrarRespuesta();
             }

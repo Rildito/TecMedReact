@@ -21,8 +21,7 @@ const customStyles = {
 
 export default function Colaboradores() {
 
-    const { usuarioLogin, showCollaborators, changeStateModalCorrespondencia, setDocumentoElegido, changeStateModalRespuesta, setUsuarioColaborador, setUsuarioCreador, setRespuestaElegida, eliminarRespuesta } = useProyect();
-    const navigate = useNavigate();
+    const { showCollaborators, changeStateModalCorrespondencia, setDocumentoElegido, changeStateModalRespuesta, setUsuarioColaborador, setUsuarioCreador, setRespuestaElegida, eliminarRespuesta } = useProyect();
     const params = useParams();
     const { id } = params;
     const token = localStorage.getItem('AUTH_TOKEN')
@@ -39,7 +38,6 @@ export default function Colaboradores() {
 
     if (isLoading) return <Cargando />
     const colaboradores = data?.data || []
-    console.log(colaboradores)
     const handleDelete = (nombre, id) => {
         Swal.fire({
             title: nombre,
@@ -53,11 +51,19 @@ export default function Colaboradores() {
             if (result.isConfirmed) {
                 const mostrarRespuesta = async () => {
                     const respuesta = await eliminarRespuesta(id);
-                    Swal.fire({
-                        title: "Eliminado!",
-                        text: respuesta,
-                        icon: "success"
-                    });
+                    if (Boolean(respuesta)) {
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: respuesta,
+                            icon: "success"
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "Error",
+                            title: "Oops...ocurrio un error",
+                            text: "Fallo en el servidor!",
+                        });
+                    }
                 }
                 mostrarRespuesta();
             }

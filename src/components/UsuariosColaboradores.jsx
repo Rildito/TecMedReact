@@ -1,11 +1,9 @@
-import Encabezado from "../components/Encabezado";
 import { useNavigate, useParams } from 'react-router-dom'
 import useProyect from "../hooks/useProyect";
 import useSWR from "swr";
 import Cargando from "../components/Cargando";
 import clienteAxios from "../config/axios";
 import Swal from 'sweetalert2'
-import { useEffect, useState } from "react";
 
 export default function UsuariosColaboradores() {
 

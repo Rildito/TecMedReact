@@ -49,7 +49,7 @@ export default function FormularioCorrespondencia() {
             tipoCorrespondencia,
             estado
         }
-        console.log(datos)
+        //console.log(datos)
         if (id) {
             resultado = await editarCorrespondencia(datos, setErrores, id)
         } else {

@@ -30,8 +30,6 @@ export default function HistorialCajaChica() {
     })
 
     if (isLoading) return <Cargando />
-    console.log(error)
-    console.log(data)
     const handleDocument = (e) => {
         e.preventDefault();
 
@@ -189,7 +187,7 @@ export default function HistorialCajaChica() {
                                                 {gasto.descripcion}
                                             </td>
                                             <td className="font-bold p-2">
-                                                {gasto.ingreso !== '0.00' ? `${gasto.ingreso} Bs.` : ''}
+                                                {gasto.ingreso !== 'no' ? `${gasto.gasto} Bs.` : ''}
                                             </td>
                                             <td className="font-bold p-2">
                                                 {gasto.gasto} Bs.

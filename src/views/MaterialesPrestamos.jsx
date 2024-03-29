@@ -86,9 +86,12 @@ export default function MaterialesPrestamos() {
             <label className="font-bold text-center">Docente: </label>
             <select
               className="rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white w-full"
+              value={docente.id || ''}
               onChange={(e) => {
                 const docenteElegido = docentes?.filter(docente => docente.id == e.target.value)
-                setDocente(docenteElegido[0])
+                if (docenteElegido.length > 0) {
+                  setDocente(docenteElegido[0])
+                }
               }}
             >
               <option value={""}>Elige un docente</option>
@@ -103,9 +106,12 @@ export default function MaterialesPrestamos() {
             <label className="font-bold">Materia: </label>
             <select
               className="rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white w-full"
+              value={materia.id || ''}
               onChange={(e) => {
                 const materiaElegida = materias.filter(materia => materia.id == e.target.value)
-                setMateria(materiaElegida[0])
+                if (materiaElegida.length > 0) {
+                  setMateria(materiaElegida[0])
+                }
               }}>
               <option value={""}>Elige una materia</option>
               {

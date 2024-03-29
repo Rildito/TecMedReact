@@ -15,7 +15,7 @@ export default function FormularioCajaChica() {
 
     const [errores, setErrores] = useState([])
 
-    const [ingreso,setIngreso] = useState(0.00);
+    const [ingreso, setIngreso] = useState('no');
     const [costo, setCosto] = useState(0.00);
     const [nro, setNro] = useState('');
     const [nroFactura, setNroFactura] = useState('');
@@ -27,7 +27,7 @@ export default function FormularioCajaChica() {
     if (id) {
         urls = ['/api/interesteds', `/api/spents/${id}`]
     } else {
-        urls = ['/api/interesteds',`/api/spents/nroVale`]
+        urls = ['/api/interesteds', `/api/spents/nroVale`]
     }
     // console.log(urls)
     const token = localStorage.getItem('AUTH_TOKEN')
@@ -41,8 +41,8 @@ export default function FormularioCajaChica() {
         return Promise.all(urls.map(url => f(url)))
     }
 
-    const { data, error, isLoading, mutate } = useSWR(urls, fetcher,{
-        refreshInterval:1000
+    const { data, error, isLoading, mutate } = useSWR(urls, fetcher, {
+        refreshInterval: 1000
     })
 
     const handleSubmit = async (e) => {
@@ -57,7 +57,7 @@ export default function FormularioCajaChica() {
             descripcion,
             custodio: entidad
         }
-        console.log(datos)
+        //console.log(datos)
         if (id) {
             resultado = await editarGasto(datos, setErrores, id)
         } else {
@@ -77,18 +77,18 @@ export default function FormularioCajaChica() {
             setEntidad(data[1].interested.id)
         }
 
-    }, [isLoading])
-    useEffect(() => {
+    }, [isLoading,data])
 
+    useEffect(() => {
         if (Boolean(id) === false && !isLoading) {
-            setNro( data[1].nro);
+            setNro(data[1].nro);
         }
 
-    }, [isLoading,data])
+    }, [isLoading, data])
 
     if (isLoading) return <Cargando />
     // console.log(error)
-    
+
     const interesteds = data[0]?.data || [];
     return (
         <>
@@ -98,21 +98,49 @@ export default function FormularioCajaChica() {
                     <label className="text-gray-200 font-bold" htmlFor="costo">Costo (Bs.)</label>
                     <input className="rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white" type="number" step="any" id="costo" placeholder="Ej. 812512" value={costo} onChange={e => setCosto(e.target.value)} />
                 </div>
-                <div className="flex flex-col text-gray-400 py-2">
-                    <label className="text-gray-200 font-bold" htmlFor="ingreso">Ingreso (Bs.)</label>
-                    <input className="rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white" type="number" step="any" id="ingreso" placeholder="Ej. 812512" value={ingreso} onChange={e => setIngreso(e.target.value)} />
-                </div>
-                <div className="flex flex-col text-gray-400 py-2">
+                {
+                    id && (
+                        <>
+                            <div className="flex items-center justify-around text-gray-400 py-2">
+                                <label className="font-bold text-white block">Habilitar Ingreso</label>
+                                <div className="flex items-center gap-1 justify-center">
+                                    <label className="text-gray-200" htmlFor="si">Si
+                                    </label>
+                                    <input 
+                                        className="rounded-lg bg-gray-500 focus:border-blue-500 focus:bg-gray-800 focus:outline-none h-4 w-4 " 
+                                        type="checkbox"
+                                        value={'si'}
+                                        checked={ingreso === 'si'}
+                                        id='si'
+                                        onChange={e => setIngreso(e.target.value)} />
+                                </div>
+                                <div className="flex items-center gap-1 justify-center">
+                                    <label className="text-gray-200" htmlFor="no">No
+                                    </label>
+                                    <input 
+                                        className="rounded-lg bg-gray-700 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white h-4 w-4" 
+                                        type="checkbox"
+                                        value={'no'}
+                                        checked={ingreso === 'no'}
+                                        id="no"
+                                        onChange={e => setIngreso(e.target.value)} />
+                                </div>
+                            </div>
+                        </>
+                    )
+                }
+
+                <div className="flex flex-col text-gray-400 ">
                     <label className="text-gray-200 font-bold" htmlFor="nrogasto">Nro de gasto</label>
-                    <input className="rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white" type="text" id="nrogasto" placeholder="Ej. 812512" value={nro} onChange={e => setNro(e.target.value)} disabled/>
+                    <input className="rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white" type="text" id="nrogasto" placeholder="Ej. 812512" value={nro} onChange={e => setNro(e.target.value)} disabled />
                 </div>
                 <div className="flex flex-col text-gray-400 py-2">
                     <label className="text-gray-200 font-bold" htmlFor="user">Nro de factura</label>
                     <input className="rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white" type="text" id="user" placeholder="Ej. 812512" value={nroFactura} onChange={e => setNroFactura(e.target.value)} />
                 </div>
                 <div className="flex flex-col text-gray-400 py-1">
-                    <label className="text-gray-200 font-bold" htmlFor="user">Custodio</label>
-                    <select className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white' value={entidad} onChange={e => setEntidad(e.target.value)}>
+                    <label className="text-gray-200 font-bold" htmlFor="custodio">Custodio</label>
+                    <select className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white' id="custodio" value={entidad} onChange={e => setEntidad(e.target.value)}>
                         <option value={""}>Elige quien recibira el dinero</option>
                         {
                             interesteds?.map(({ nombreCompleto, id }) => (
@@ -122,9 +150,9 @@ export default function FormularioCajaChica() {
                     </select>
                 </div>
                 <div className="flex flex-col text-gray-400 py-2">
-                    <label className="text-gray-200 font-bold" htmlFor="user">Descripción</label>
+                    <label className="text-gray-200 font-bold" htmlFor="descripcion">Descripción</label>
                     <textarea
-                        className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white'
+                        className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white' id='descripcion'
                         value={descripcion} onChange={e => setDescripcion(e.target.value)}
                     />
                 </div>

@@ -18,8 +18,6 @@ export default function ModalDocumentoGeneradoCorrespondencia() {
     const { data, error, isLoading } = useSWR(`/api/moneybox/${dateOne}/${dateTwo}/${tipoCorrespondencia}`, fetcher)
 
     if (isLoading) return <Cargando />
-    console.log(error)
-    console.log(data)
     return (
 
         <>

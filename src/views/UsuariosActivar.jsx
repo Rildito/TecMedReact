@@ -55,11 +55,19 @@ export default function UsuariosActivar() {
             if (result.isConfirmed) {
                 const mostrarRespuesta = async () => {
                     const respuesta = await activarUsuario(id);
-                    Swal.fire({
-                        title: "Activado!",
-                        text: respuesta,
-                        icon: "success"
-                    });
+                    if (Boolean(respuesta)) {
+                        Swal.fire({
+                            title: "Activado!",
+                            text: respuesta,
+                            icon: "success"
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "Error",
+                            title: "Oops...ocurrio un error",
+                            text: "Fallo en el servidor!",
+                        });
+                    }
                 }
                 mostrarRespuesta();
             }

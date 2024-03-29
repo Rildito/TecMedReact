@@ -28,7 +28,7 @@ export default function InformacionPrestamo() {
       <div>
         <div className="flex justify-between items-center border-4 border-gray-900 bg-gray-900 p-3 px-5">
           <div className="text-white text-lg">
-            <p>Estudiante: <span className="font-bold">{usuario?.nombreCompleto}</span> </p>
+            <p>{usuario?.ru === 'Sin ru' ? 'Administrativo:' : 'Estudiante:'} <span className="font-bold">{usuario?.nombreCompleto}</span> </p>
             <p>Carnet de Identidad: <span className="font-bold">{usuario?.ci}</span></p>
             {
               usuario?.ru != 'Sin ru' &&

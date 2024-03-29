@@ -36,16 +36,24 @@ export default function DirectorCajaChica() {
     }).then((result) => {
       if (result.isConfirmed) {
         const datos = {
-          user_id : id,
+          user_id: id,
           id: '1'
         }
         const mostrarRespuesta = async () => {
           const respuesta = await elegirDirector(datos);
-          Swal.fire({
-            title: "Se realizo con exito!",
-            text: respuesta,
-            icon: "success"
-          });
+          if (Boolean(respuesta)) {
+            Swal.fire({
+              title: "Se realizo con exito!",
+              text: respuesta,
+              icon: "success"
+            });
+          } else {
+            Swal.fire({
+              icon: "Error",
+              title: "Oops...ocurrio un error",
+              text: "Fallo en el servidor!",
+            });
+          }
         }
         mostrarRespuesta();
       }
@@ -73,7 +81,7 @@ export default function DirectorCajaChica() {
                   <th scope="row" className="p-2 font-medium">
                     {docente.nombreCompleto}
                   </th>
-                  
+
                   <td className="p-2">
                     <button type="button" className="bg-cyan-900 hover:bg-cyan-950 text-white p-4 rounded-lg font-bold" onClick={() => {
                       handleSubmit(docente.nombreCompleto, docente.id)

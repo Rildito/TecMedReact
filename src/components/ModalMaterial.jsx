@@ -6,7 +6,7 @@ export default function ModalMaterial() {
 
     const [cantidad, setCantidad] = useState(1);
 
-    const { changeStateModalMaterial, material, cargandoModal, aumentarPedido, editarPedido, pedido } = useProyect();
+    const { changeStateModalMaterial, material, cargandoModal, aumentarPedido, editarPedido, pedido, changeViewMenu, menuMateriales } = useProyect();
 
     const aumentarCantidad = () => {
         setCantidad(Math.min(cantidad + 1, material.cantidad_disponible))
@@ -17,7 +17,7 @@ export default function ModalMaterial() {
     }
 
     const agregarPedido = () => {
-        
+
         const pedidoEncontrado = pedido.some(element => element.id === material.id)
 
         if (!pedidoEncontrado) {
@@ -32,6 +32,9 @@ export default function ModalMaterial() {
     useEffect(() => {
         if (material.cantidad) {
             setCantidad(material.cantidad)
+        }
+        return () => {
+            setCantidad(1)
         }
     }, [material])
 
@@ -67,20 +70,26 @@ export default function ModalMaterial() {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                                 </svg>
                             </button>
-                            <span className="text-2xl font-bold text-white">{cantidad}</span>
+                            <span className="text-2xl font-bold text-white">{material.cantidad_utilizada !== 0 ? cantidad: 0}</span>
                             <button className="bg-green-500 hover:bg-green-600 rounded-full w-7 h-7 flex items-center justify-center" onClick={aumentarCantidad}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
                             </button>
                         </div>
-                        <button className="w-full bg-blue-700 hover:bg-blue-900 text-white font-black py-1 rounded-full" onClick={() => {
+                        <button className="w-full bg-blue-700 hover:bg-blue-900 text-white font-black py-1 rounded-full" disabled={material.cantidad_utilizada === 0} onClick={() => {
                             agregarPedido()
                             changeStateModalMaterial()
                             if (material.cantidad) {
-                                editarPedido({nombre: material.nombre, id:material.id, cantidad})
+                                editarPedido({ nombre: material.nombre, id: material.id, cantidad })
                             }
-                            setCantidad(1)
+                            if (!menuMateriales) {
+                                changeViewMenu()
+                            }
+
+                            if (window.innerWidth <= 639) {
+                                changeViewMenu()
+                            }
                         }}
                         >{material.cantidad ? 'GUARDAR CAMBIOS' : 'PEDIR'}</button>
                     </div>

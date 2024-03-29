@@ -25,7 +25,6 @@ export default function RecuperarCorrespondencia() {
 
   if (isLoading) return <Cargando />
   const correspondencias = data.data
-  console.log(correspondencias)
   const handleDelete = (nombre, id) => {
     Swal.fire({
       title: nombre,
@@ -39,11 +38,20 @@ export default function RecuperarCorrespondencia() {
       if (result.isConfirmed) {
         const mostrarRespuesta = async () => {
           const respuesta = await confirmarEliminarCorrespondencia(id);
-          Swal.fire({
-            title: "Se realizo con exito!",
-            text: respuesta,
-            icon: "success"
-          });
+
+          if (Boolean(respuesta)) {
+            Swal.fire({
+              title: "Se realizo con exito!",
+              text: respuesta,
+              icon: "success"
+            });
+          } else {
+            Swal.fire({
+              icon: "Error",
+              title: "Oops...ocurrio un error",
+              text: "Fallo en el servidor!",
+            });
+          }
         }
         mostrarRespuesta();
       }
@@ -63,11 +71,19 @@ export default function RecuperarCorrespondencia() {
       if (result.isConfirmed) {
         const mostrarRespuesta = async () => {
           const respuesta = await recuperarCorrespondencia(id);
-          Swal.fire({
-            title: "Se realizo con exito!",
-            text: respuesta,
-            icon: "success"
-          });
+          if (Boolean(respuesta)) {
+            Swal.fire({
+              title: "Se realizo con exito!",
+              text: respuesta,
+              icon: "success"
+            });
+          } else {
+            Swal.fire({
+              icon: "Error",
+              title: "Oops...ocurrio un error",
+              text: "Fallo en el servidor!",
+            });
+          }
         }
         mostrarRespuesta();
       }

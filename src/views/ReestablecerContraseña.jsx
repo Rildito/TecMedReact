@@ -31,7 +31,6 @@ export default function ReestablecerContraseña() {
             token,
             email
         }
-        console.log(datos)
         upgrade_password(datos, setErrores)
 
     }

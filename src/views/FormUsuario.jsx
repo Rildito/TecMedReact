@@ -1,7 +1,6 @@
-import { createRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import FormEncabezado from "../components/FormEncabezado";
-import { useAuth } from "../hooks/useAuth";
 import useProyect from "../hooks/useProyect";
 import Alerta from "../components/Alerta";
 import useSWR from "swr";
@@ -10,8 +9,7 @@ import Cargando from "../components/Cargando";
 
 export default function FormUsuario() {
 
-  const { cargando, editarUsuario } = useProyect();
-  const { register } = useAuth()
+  const { cargando, editarUsuario, crearUsuario } = useProyect();
   const params = useParams();
   const { id } = params;
   const navigate = useNavigate()
@@ -57,9 +55,8 @@ export default function FormUsuario() {
     }
     if (id) {
       resultado = await editarUsuario(datos, setErrores)
-      mutate(datos)
     } else {
-      resultado = await register(datos, setErrores)
+      resultado = await crearUsuario(datos, setErrores)
     }
     if (resultado) {
       navigate('/administrador/usuarios')
@@ -74,7 +71,7 @@ export default function FormUsuario() {
     }
   }).then(data => data.data)
 
-  const { data, error, isLoading, mutate } = useSWR(id ? `/api/users/${id}` : null, fetcher)
+  const { data, error, isLoading } = useSWR(id ? `/api/users/${id}` : null, fetcher)
 
   useEffect(() => {
     if (id && !isLoading) {
@@ -89,10 +86,9 @@ export default function FormUsuario() {
       setTipoUsuario(data.tipo)
     }
 
-  }, [isLoading])
+  }, [isLoading, data])
 
   if (isLoading) return <Cargando />
-  console.log(data)
   return (
     <>
       <FormEncabezado />
@@ -102,6 +98,7 @@ export default function FormUsuario() {
           noValidate
           onSubmit={handleSubmit}
           encType="multipart/form-data"
+          id="formRegistro"
         >
           <h2 className="text-4xl text-yellow-500 font-bold text-center mb-3">{id ? 'Editar usuario' : 'Registrar usuarios'}</h2>
           {errores ? errores.map((error, i) => <Alerta key={i}>{error}</Alerta>) : null}
@@ -172,28 +169,34 @@ export default function FormUsuario() {
                 />
               </div>
             </div>
+            {
+              !Boolean(id) && (
+                <>
+                  <p className="text-gray-200">Elige el tipo de usuario</p>
+                  <div className="flex justify-around mt-2">
+                    <button
+                      type="button"
+                      className={`${tipoUsuario == 'estudiante' ? 'bg-blue-600' : 'bg-blue-300'} font-bold p-2 rounded-lg`}
+                      onClick={() => setTipoUsuario('estudiante')}
+                      disabled={id ? true : false}
+                    >Estudiante</button>
+                    <button
+                      type="button"
+                      className={`${tipoUsuario == 'administrativo' ? 'bg-blue-600' : 'bg-blue-300'} font-bold p-2 rounded-lg`}
+                      onClick={() => setTipoUsuario('administrativo')}
+                      disabled={id ? true : false}
+                    >Administrativo</button>
+                    <button
+                      type="button"
+                      className={`${tipoUsuario == 'administrador' ? 'bg-blue-600' : 'bg-blue-300'} font-bold p-2 rounded-lg`}
+                      onClick={() => setTipoUsuario('administrador')}
+                      disabled={id ? true : false}
+                    >Administrador</button>
+                  </div>
+                </>
+              )
+            }
 
-            <p className="text-gray-200">Elige el tipo de usuario</p>
-            <div className="flex justify-around mt-2">
-              <button
-                type="button"
-                className={`${tipoUsuario == 'estudiante' ? 'bg-blue-600' : 'bg-blue-300'} font-bold p-2 rounded-lg`}
-                onClick={() => setTipoUsuario('estudiante')}
-                disabled={id ? true : false}
-              >Estudiante</button>
-              <button
-                type="button"
-                className={`${tipoUsuario == 'administrativo' ? 'bg-blue-600' : 'bg-blue-300'} font-bold p-2 rounded-lg`}
-                onClick={() => setTipoUsuario('administrativo')}
-                disabled={id ? true : false}
-              >Administrativo</button>
-              <button
-                type="button"
-                className={`${tipoUsuario == 'administrador' ? 'bg-blue-600' : 'bg-blue-300'} font-bold p-2 rounded-lg`}
-                onClick={() => setTipoUsuario('administrador')}
-                disabled={id ? true : false}
-              >Administrador</button>
-            </div>
 
             {
               tipoUsuario == 'estudiante' &&

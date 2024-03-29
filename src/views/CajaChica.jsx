@@ -6,8 +6,7 @@ import clienteAxios from "../config/axios";
 import useSWR from "swr";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2'
-import Alerta from "../components/Alerta";
-import { convertirFecha, convertirFechaSinHora } from "../helpers/CajaChica";
+import { convertirFechaSinHora } from "../helpers/CajaChica";
 
 export default function CajaChica() {
 
@@ -15,10 +14,6 @@ export default function CajaChica() {
     const navigate = useNavigate();
 
     const token = localStorage.getItem('AUTH_TOKEN')
-
-    const [dateOne, setDateOne] = useState('');
-    const [dateTwo, setDateTwo] = useState('');
-    const [errores, setErrores] = useState('')
 
     const [apiItems, setApiItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([])
@@ -61,11 +56,20 @@ export default function CajaChica() {
             if (result.isConfirmed) {
                 const mostrarRespuesta = async () => {
                     const respuesta = await eliminarGasto(id);
-                    Swal.fire({
-                        title: "Eliminado!",
-                        text: respuesta,
-                        icon: "success"
-                    });
+                    if (Boolean(respuesta)) {
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: respuesta,
+                            icon: "success"
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "Error",
+                            title: "Oops...ocurrio un error",
+                            text: "Fallo en el servidor!",
+                        });
+                    }
+
                 }
                 mostrarRespuesta();
             }
@@ -122,7 +126,7 @@ export default function CajaChica() {
                                         {gasto.gasto} Bs.
                                     </td>
                                     <td className="p-2">
-                                        {gasto.ingreso === '0.00' ? '' : `${gasto.ingreso} Bs.`}
+                                        {gasto.ingreso === 'no' ? '' : `${gasto.gasto} Bs.`}
                                     </td>
                                     <td className="p-2">
                                         {gasto.nroFactura || 'Sin número de factura'}

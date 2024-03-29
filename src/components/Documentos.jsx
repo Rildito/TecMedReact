@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import useProyect from "../hooks/useProyect";
 import useSWR from "swr";
 import Cargando from "../components/Cargando";
@@ -13,7 +12,6 @@ export default function Documentos({ id: correspondenciaId }) {
     const [users, setUsers] = useState([]);
 
     const { filtrado, usuarioLogin, agregarColaborador } = useProyect();
-    const navigate = useNavigate();
     const token = localStorage.getItem('AUTH_TOKEN')
 
     const fetcher = () => clienteAxios('/api/users', {

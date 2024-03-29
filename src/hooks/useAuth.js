@@ -4,7 +4,7 @@ import clienteAxios from "../config/axios"
 import { useState } from "react"
 import useProyect from "./useProyect"
 import { toast } from "react-toastify"
-
+import CryptoJS from "crypto-js"
 
 export const useAuth = () => {
 
@@ -30,41 +30,38 @@ export const useAuth = () => {
         try {
             setCargando(true);
             const { data } = await clienteAxios.post('/api/login', datos)
-            
-            if (data?.user?.tipo === 'colaborador' && data?.user?.estado === 'Sin activar' ||
-                data?.user?.tipo === 'administrativo' && data?.user?.estado === 'Sin activar') {
+            if (data.user.estado === 'Sin activar') {
                 navigate('/sin-permiso')
                 return
             }
 
+            const informacionEncriptada = CryptoJS.AES.encrypt(JSON.stringify(data.user),'secret_key')
             localStorage.setItem('AUTH_TOKEN', data.token)
-            localStorage.setItem('usuario', JSON.stringify(data.user))
+            localStorage.setItem('usuario', informacionEncriptada)
             setErrores([])
             await mutate()
 
+            setUsuarioLogin(data.user)
             if (data.user.tipo == 'estudiante') {
-                setUsuarioLogin(data.user)
                 navigate('/estudiante')
                 changeView('materiales')
             }
 
             if (data.user.tipo == 'administrativo') {
-                setUsuarioLogin(data.user)
                 navigate('/administrativo/correspondencia-recibida')
                 changeView('correspondencia recibida')
             }
 
             if (data.user.tipo == 'administrador') {
-                setUsuarioLogin(data.user)
                 navigate('/administrador/usuarios')
                 changeView('usuarios')
             }
 
             if (data.user.tipo == 'colaborador') {
-                setUsuarioLogin(data.user)
                 navigate('/colaborador/correspondencia')
                 changeView('correspondencia')
             }
+
         } catch (error) {
             console.log(error)
             setErrores(Object.values(error?.response?.data?.errors || []))
@@ -83,19 +80,17 @@ export const useAuth = () => {
                 }
             })
 
-            if (Object.keys(usuarioLogin).length === 0 && ((data?.user?.tipo === 'colaborador' && data?.user?.estado === 'Sin activar' ||
-                data?.user?.tipo === 'administrativo' && data?.user?.estado === 'Sin activar'))){
+            if (data.user.estado === 'Sin activar') {
                 navigate('/sin-permiso')
                 return
             }
 
-            if (Object.keys(usuarioLogin).length === 0) {
-                localStorage.setItem('AUTH_TOKEN', data.token)
-                localStorage.setItem('usuario', JSON.stringify(data.user))
-                setUsuarioLogin(data.user)
-                setErrores([])
-                await mutate()
-            }
+            const informacionEncriptada = CryptoJS.AES.encrypt(JSON.stringify(data.user),'secret_key')
+            localStorage.setItem('AUTH_TOKEN', data.token)
+            localStorage.setItem('usuario', informacionEncriptada)
+            setUsuarioLogin(data.user)
+            setErrores([])
+            await mutate()
 
             if (data.user.tipo == 'estudiante') {
                 navigate('/estudiante')
@@ -116,6 +111,7 @@ export const useAuth = () => {
         } catch (error) {
             console.log(error)
             setErrores(Object.values(error?.response?.data?.errors || []))
+            window.scrollTo({top:0, behavior:'smooth'})
         } finally {
             setCargando(false);
         }

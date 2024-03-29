@@ -9,7 +9,7 @@ import Swal from 'sweetalert2'
 
 export default function Materiales() {
 
-    const { showDetails, eliminarPrestamo, obtenerPrestamo,filtrado } = useProyect();
+    const { showDetails, eliminarPrestamo, obtenerPrestamo, filtrado } = useProyect();
 
     const [apiItems, setApiItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([])
@@ -56,11 +56,19 @@ export default function Materiales() {
             if (result.isConfirmed) {
                 const mostrarRespuesta = async () => {
                     const respuesta = await eliminarPrestamo(id);
-                    Swal.fire({
-                        title: "Eliminado!",
-                        text: respuesta,
-                        icon: "success"
-                    });
+                    if (Boolean(respuesta)) {
+                        Swal.fire({
+                            title: "Eliminado!",
+                            text: respuesta,
+                            icon: "success"
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "Error",
+                            title: "Oops...ocurrio un error",
+                            text: "Fallo en el servidor!",
+                        });
+                    }
                 }
                 mostrarRespuesta();
             }

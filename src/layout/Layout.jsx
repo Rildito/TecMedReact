@@ -35,18 +35,17 @@ Modal.setAppElement('#root')
 
 export default function Layout() {
   const { modalMoreDetails, modalMaterial, usuarioLogin, modalCorrespondencia, modalCajaChica, modalCajaChicaDocumento, modalColaboradores, modalRespuesta, modalDocumentoGeneradoCorrespondencia, changeConfirmationNavegation, setRespuestaNavegacion, modalNavegacion } = useProyect();
-  const pusher = usePusher('my-channel', 'event-notification', data => {
-    console.log(data)
-    const audio = new Audio('/musica/notificacion.mp3')
-    audio.play();
-    setRespuestaNavegacion({
-      nombreCompleto: data.nombreCompleto,
-      nombreCorrespondencia: data.correspondencia,
-      id: data.id
-    })
-    changeConfirmationNavegation();
-    // alert(data.message)
-  })
+  // const pusher = usePusher('my-channel', 'event-notification', data => {
+  //   const audio = new Audio('/musica/notificacion.mp3')
+  //   audio.play();
+  //   setRespuestaNavegacion({
+  //     nombreCompleto: data.nombreCompleto,
+  //     nombreCorrespondencia: data.correspondencia,
+  //     id: data.id
+  //   })
+  //   changeConfirmationNavegation();
+  //   // alert(data.message)
+  // })
   if (!Boolean(usuarioLogin)) return <SinPermisos />
   if (usuarioLogin.tipo == 'administrativo') {
     return (

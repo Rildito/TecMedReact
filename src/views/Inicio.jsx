@@ -1,6 +1,34 @@
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import useProyect from "../hooks/useProyect";
+import { useEffect } from 'react'
 export default function Inicio() {
+    const { changeView } = useProyect()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const userLogged = JSON.parse(localStorage.getItem('usuario'))
+        if (Boolean(userLogged)) {
+            if (userLogged.tipo == 'estudiante') {
+                navigate('/estudiante')
+                changeView('materiales')
+            }
+
+            if (userLogged.tipo == 'administrativo') {
+                navigate('/administrativo/correspondencia-recibida')
+                changeView('correspondencia recibida')
+            }
+
+            if (userLogged.tipo == 'administrador') {
+                navigate('/administrador/usuarios')
+                changeView('usuarios')
+            }
+
+            if (userLogged.tipo == 'colaborador') {
+                navigate('/colaborador/correspondencia')
+                changeView('correspondencia')
+            }
+        }
+    }, [])
     return (
         <>
             <div className="min-w-screen min-h-screen flex md:flex-row flex-col-reverse justify-center items-center bg-gradient-to-r from-slate-900 to-slate-700 gap-5 p-6">
@@ -28,7 +56,7 @@ export default function Inicio() {
                         style={{
                             filter: 'drop-shadow(-2px 2px 25px rgba(255, 255, 255, 1))'
                         }}
-                        src="./images/logoTecMed.png"
+                        src="/images/logoTecMed.png"
                     />
                 </div>
 
