@@ -35,15 +35,13 @@ const ProyProvider = ({ children }) => {
     const [respuestaNavegacion, setRespuestaNavegacion] = useState('');
 
 
-    //Pedidos de materiales
+    //utilidades
 
     const [material, setMaterial] = useState({});
     const [pedido, setPedido] = useState([])
     const [pedidoUrl, setPedidoUrl] = useState([])
     const [pedidos, setPedidos] = useState([])
-
-    //Const editado de formularios
-
+    const [correspondenciasNotificacion, setCorrespondenciasNotificacion] = useState([])
 
     const aumentarPedido = (pedidoUsuario) => {
         setPedido([...pedido, pedidoUsuario])
@@ -903,16 +901,18 @@ const ProyProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        const informacionDesencriptada = CryptoJS.AES.decrypt(localStorage.getItem('usuario'),'secret_key')
-        const usuarioJSON = informacionDesencriptada.toString(CryptoJS.enc.Utf8)
-        setUsuarioLogin(JSON.parse(usuarioJSON))
+        if (localStorage.getItem('usuario')) {
+            const informacionDesencriptada = CryptoJS.AES.decrypt(localStorage.getItem('usuario'),'secret_key')
+            const usuarioJSON = informacionDesencriptada.toString(CryptoJS.enc.Utf8)
+            setUsuarioLogin(JSON.parse(usuarioJSON))
+        }
     }, [])
-
 
     return (
         <ProyContext.Provider value={{
             cargando,
             cargandoModal,
+            correspondenciasNotificacion,
             documentoElegido,
             gastoElegido,
             fechasGasto,
@@ -992,6 +992,7 @@ const ProyProvider = ({ children }) => {
             realizarPedido,
             recuperarCorrespondencia,
             setCargando,
+            setCorrespondenciasNotificacion,
             setFechasGasto,
             setFechasDocumento,
             setRespuestaElegida,

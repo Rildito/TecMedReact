@@ -30,8 +30,9 @@ export default function CajaChica() {
 
     useEffect(() => {
         const itemsFiltrados = apiItems.filter(item => (
-            item.descripcion.toLowerCase().includes(filtrado.toLowerCase())
+            convertirFechaSinHora(item.created_at).toLowerCase().includes(filtrado.toLowerCase()) || item.descripcion.toLowerCase().includes(filtrado.toLowerCase())
         ))
+
         setFilteredItems(itemsFiltrados);
     }, [filtrado])
 

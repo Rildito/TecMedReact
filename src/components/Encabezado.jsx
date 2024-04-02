@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom';
-
 import useProyect from '../hooks/useProyect'
 
 export default function Encabezado() {
@@ -10,9 +9,7 @@ export default function Encabezado() {
     return (
         <div className="flex max-lg:flex-col max-lg:gap-3 items-center justify-between p-2 rounded-lg shadow-2xl bg-white">
             <div className="flex max-lg:flex-col max-lg:gap-3 items-center justify-between w-full lg:mr-5">
-                {
-                    <p className="font-black md:text-4xl text-3xl text-blue-950 capitalize md:mr-3 text-center">{view}</p>
-                }
+                <p className="font-black md:text-4xl text-3xl text-blue-950 capitalize md:mr-3 text-center">{view}</p>
                 <div className='flex gap-2'>
                     {
                         (usuarioLogin.tipo === 'administrativo' ||
@@ -64,6 +61,7 @@ export default function Encabezado() {
                     </div>
                 </form>
             </div>
+
         </div >
     )
 }

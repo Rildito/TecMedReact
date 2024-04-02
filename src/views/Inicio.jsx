@@ -1,29 +1,27 @@
 import { Link, useNavigate } from 'react-router-dom'
 import useProyect from "../hooks/useProyect";
 import { useEffect } from 'react'
+import CryptoJS from "crypto-js"
 export default function Inicio() {
     const { changeView } = useProyect()
     const navigate = useNavigate()
 
     useEffect(() => {
-        const userLogged = JSON.parse(localStorage.getItem('usuario'))
-        if (Boolean(userLogged)) {
+        if (localStorage.getItem('usuario')) {
+            const informacionDesencriptada = CryptoJS.AES.decrypt(localStorage.getItem('usuario'), 'secret_key')
+            const usuarioObtenido = informacionDesencriptada.toString(CryptoJS.enc.Utf8)
+            const userLogged = JSON.parse(usuarioObtenido)
             if (userLogged.tipo == 'estudiante') {
                 navigate('/estudiante')
                 changeView('materiales')
-            }
-
-            if (userLogged.tipo == 'administrativo') {
+            } else if (userLogged.tipo == 'administrativo') {
                 navigate('/administrativo/correspondencia-recibida')
                 changeView('correspondencia recibida')
-            }
-
-            if (userLogged.tipo == 'administrador') {
+            } else if (userLogged.tipo == 'administrador') {
                 navigate('/administrador/usuarios')
                 changeView('usuarios')
             }
-
-            if (userLogged.tipo == 'colaborador') {
+            else if (userLogged.tipo == 'colaborador') {
                 navigate('/colaborador/correspondencia')
                 changeView('correspondencia')
             }

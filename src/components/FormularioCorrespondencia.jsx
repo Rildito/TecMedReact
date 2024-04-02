@@ -61,9 +61,11 @@ export default function FormularioCorrespondencia() {
         }
     }
 
+    
     let url = id ? `/api/correspondences/${id}` : `/api/correspondences/hojaDeRuta`
 
     const handleUnit = async (areaSelected) => {
+        setUnidades([])
         const unidadesObtenidas = await obtenerUnidades(areaSelected)
         setUnidades(unidadesObtenidas)
     }
@@ -95,9 +97,6 @@ export default function FormularioCorrespondencia() {
     useEffect(() => {
         const obtenerDatos = async () => {
             if (id && !isLoading) {
-                const unidadesObtenidas = await obtenerUnidades(data.data.unit.area)
-                setUnidades(unidadesObtenidas)
-                setArea(data.data.unit.area)
                 setNombre(data.data.nombre)
                 setHojaDeRuta(data.data.hojaDeRuta)
                 setUnidad(data.data.unit.id)
@@ -105,6 +104,8 @@ export default function FormularioCorrespondencia() {
                 setFile(data.data.documento)
                 setReceptor(data.data.receptor || '')
                 setEstado(data.data.estado)
+                setArea(data.data.unit.area)
+                setUnidades(data.data.unidades)
             }
         }
         obtenerDatos();
@@ -117,7 +118,7 @@ export default function FormularioCorrespondencia() {
     }, [isLoading, data])
 
     if (isLoading) return <Cargando />
-
+    console.log(isLoading,"finalizao")
     return (
         <>
             <form className="max-w-[500px] w-full mx-auto mt-5 bg-gray-900 p-6 rounded-lg text" onSubmit={handleSubmit} encType='multipart/form-data'>

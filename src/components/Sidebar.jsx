@@ -1,10 +1,11 @@
-import logoImg from '/images/logoTecMed.png'
+import logoImg from '../public/images/logoTecMed.png'
 import useProyect from '../hooks/useProyect'
 import AdministradorOpciones from './AdministradorOpciones';
 import AdministrativoOpciones from './AdministrativoOpciones'
 import { useAuth } from '../hooks/useAuth';
 import ColaboradorOpciones from './ColaboradorOpciones';
 import EstudianteOpciones from './EstudianteOpciones';
+import Notificaciones from './Notificaciones';
 
 export default function Sidebar() {
 
@@ -26,12 +27,18 @@ export default function Sidebar() {
             </div>
             <button type="button" className='w-full bg-red-500 hover:bg-red-600 mt-4 p-3 font-black text-white text-sm' onClick={logout}>Cerrar Sesion</button>
             <div className='mt-5 p-2 flex items-center gap-1 justify-center border border-x-0 border-yellow-500'>
-                <img
-                    className="w-12 h-12 rounded-full border-2"
-                    src={usuarioLogin.imagen}
-                    alt="Imagen Logo"
-                />
+                <div className='relative'>
+                    <img
+                        className="w-12 h-12 rounded-full border-2"
+                        src={usuarioLogin.imagen}
+                        alt="Imagen Logo"
+                    />
+                    {
+                        usuarioLogin.tipo == 'administrativo' && <Notificaciones />
+                    }
+                </div>
                 <p className="text-center text-white">Hola: <span className='font-bold text-yellow-300'>{usuarioLogin.nombres}</span></p>
+
             </div>
             {
                 usuarioLogin.tipo == 'administrativo' && (
@@ -55,7 +62,7 @@ export default function Sidebar() {
                 )
             }
 
-{
+            {
                 usuarioLogin.tipo == 'colaborador' && (
                     <ColaboradorOpciones />
                 )

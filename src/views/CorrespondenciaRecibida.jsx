@@ -13,7 +13,6 @@ import { convertirFecha, convertirFechaSinHora } from '../helpers/CajaChica';
 
 export default function CorrespondenciaRecibida() {
 
-
     const { changeStateModalCorrespondencia,
         eliminarCorrespondencia,
         setDocumentoElegido,
@@ -48,13 +47,6 @@ export default function CorrespondenciaRecibida() {
     })
 
     useEffect(() => {
-        // const itemsFiltrados = apiItems.filter(item => {
-        //     const fechaFiltrado = convertirFechaSinHora(item.fechaCreacion);
-        //     if (item.nombre.toLowerCase().includes(filtrado.toLowerCase) ||
-        //     fechaFiltrado.toLowerCase().includes(filtrado.toLowerCase)) {
-        //         return item
-        //     }
-        // }
         const itemsFiltrados = apiItems.filter(item => (
             item.nombre.toLowerCase().includes(filtrado.toLowerCase()) 
             || convertirFechaSinHora(item.fechaCreacion).toLowerCase().includes(filtrado.toLowerCase())

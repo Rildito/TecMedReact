@@ -38,6 +38,7 @@ import MensajeConfirmacion from './components/MensajeConfirmacion'
 import UsuariosActivar from './views/UsuariosActivar'
 import HistorialCajaChica from './views/HistorialCajaChica'
 import RecuperarCorrespondencia from './views/RecuperarCorrespondencia'
+import Notificaciones from './views/Notificaciones'
 
 const router = createBrowserRouter([
     {
@@ -121,7 +122,11 @@ const router = createBrowserRouter([
             {
                 path: '/administrativo/materiales/nuevo',
                 element: <MaterialesPrestamos />
-            }
+            },
+            {
+                path: '/administrativo/notificaciones',
+                element: <Notificaciones />
+            },
         ]
     },
 
