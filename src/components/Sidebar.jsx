@@ -1,4 +1,4 @@
-import logoImg from '../public/images/logoTecMed.png'
+import logoImg from '../../public/images/logoTecMed.png'
 import useProyect from '../hooks/useProyect'
 import AdministradorOpciones from './AdministradorOpciones';
 import AdministrativoOpciones from './AdministrativoOpciones'

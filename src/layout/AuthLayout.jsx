@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import loginImg from '../public/images/fondo.jpeg';
+import loginImg from '../../public/images/fondo.jpeg';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
