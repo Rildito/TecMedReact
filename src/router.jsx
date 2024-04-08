@@ -39,6 +39,7 @@ import UsuariosActivar from './views/UsuariosActivar'
 import HistorialCajaChica from './views/HistorialCajaChica'
 import RecuperarCorrespondencia from './views/RecuperarCorrespondencia'
 import Notificaciones from './views/Notificaciones'
+import EditarDatos from './views/EditarDatos'
 
 const router = createBrowserRouter([
     {
@@ -126,6 +127,10 @@ const router = createBrowserRouter([
             {
                 path: '/administrativo/notificaciones',
                 element: <Notificaciones />
+            },
+            {
+                path: '/administrativo/editarDatos',
+                element: <EditarDatos />
             },
         ]
     },
@@ -249,23 +254,27 @@ const router = createBrowserRouter([
             {
                 path:'/estudiante/correspondencia/responder/:id',
                 element: <ColaboradorEstudiante />
-            }
-        ]
-    },
-    {
-        path: '/colaborador',
-        element: <ColaboradorLayout />,
-        children: [
-            {
-                path:'/colaborador/correspondencia',
-                element: <CorrespondenciaGeneral />
             },
             {
-                path:'/colaborador/correspondencia/responder/:id',
-                element: <ColaboradorEstudiante />
+                path:'/estudiante/editarDatos',
+                element:<EditarDatos />
             }
         ]
     },
+    // {
+    //     path: '/colaborador',
+    //     element: <ColaboradorLayout />,
+    //     children: [
+    //         {
+    //             path:'/colaborador/correspondencia',
+    //             element: <CorrespondenciaGeneral />
+    //         },
+    //         {
+    //             path:'/colaborador/correspondencia/responder/:id',
+    //             element: <ColaboradorEstudiante />
+    //         }
+    //     ]
+    // },
     {
         path:'/sin-permiso',
         element: <MensajeConfirmacion />

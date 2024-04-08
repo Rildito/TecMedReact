@@ -40,7 +40,6 @@ export const useAuth = () => {
             localStorage.setItem('usuario', informacionEncriptada)
             setErrores([])
             await mutate()
-
             setUsuarioLogin(data.user)
             if (data.user.tipo == 'estudiante') {
                 navigate('/estudiante')

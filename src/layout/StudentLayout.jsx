@@ -9,6 +9,8 @@ import ModalMaterial from "../components/ModalMaterial";
 import SinPermisos from "../components/SinPermisos";
 import ModalDocumento from "../components/ModalDocumento";
 import ModalRespuesta from "../components/ModalRespuesta";
+import ModalRecuperarContraseña from "../components/ModalRecuperarContraseña";
+import { useEffect } from "react";
 
 const customStyles = {
   content: {
@@ -24,7 +26,14 @@ const customStyles = {
 
 export default function StudentLayout() {
 
-  const { modalMaterial, usuarioLogin, modalCorrespondencia, modalRespuesta } = useProyect();
+  const { modalMaterial, usuarioLogin, modalCorrespondencia, modalRespuesta, modalContraseña, changeStateModalContraseña } = useProyect();
+  
+  useEffect(()=>{
+    if (usuarioLogin.resetear === '1') {
+      changeStateModalContraseña(true)
+    }
+  },[usuarioLogin])
+
   if (!Boolean(usuarioLogin)) return <SinPermisos />
   if (usuarioLogin.tipo == 'estudiante') {
     return (
@@ -36,6 +45,10 @@ export default function StudentLayout() {
             <Outlet />
           </main>
         </div>
+
+        <Modal isOpen={modalContraseña} style={customStyles}>
+          <ModalRecuperarContraseña />
+        </Modal>
 
         <Modal isOpen={modalMaterial} style={customStyles}>
           <ModalMaterial />

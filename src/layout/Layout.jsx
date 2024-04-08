@@ -17,6 +17,8 @@ import ModalRespuesta from '../components/ModalRespuesta';
 import ModalDocumentoGeneradoCorrespondencia from '../components/ModalDocumentoGeneradoCorrespondencia';
 // import { usePusher } from '../hooks/usePusher';
 import ModalConfirmarNavegacion from '../components/ModalConfirmarNavegacion';
+import ModalRecuperarContraseña from '../components/ModalRecuperarContraseña';
+import { useEffect } from 'react';
 
 
 const customStyles = {
@@ -34,7 +36,7 @@ const customStyles = {
 Modal.setAppElement('#root')
 
 export default function Layout() {
-  const { modalMoreDetails, modalMaterial, usuarioLogin, modalCorrespondencia, modalCajaChica, modalCajaChicaDocumento, modalColaboradores, modalRespuesta, modalDocumentoGeneradoCorrespondencia, changeConfirmationNavegation, setRespuestaNavegacion, modalNavegacion } = useProyect();
+  const { modalMoreDetails, modalMaterial, usuarioLogin, modalCorrespondencia, modalCajaChica, modalCajaChicaDocumento, modalColaboradores, modalRespuesta, modalDocumentoGeneradoCorrespondencia, modalContraseña, changeStateModalContraseña, changeConfirmationNavegation, setRespuestaNavegacion, modalNavegacion } = useProyect();
   // const pusher = usePusher('my-channel', 'event-notification', data => {
   //   const audio = new Audio('/musica/notificacion.mp3')
   //   audio.play();
@@ -46,6 +48,12 @@ export default function Layout() {
   //   changeConfirmationNavegation();
   //   // alert(data.message)
   // })
+
+  useEffect(()=>{
+    if (usuarioLogin.resetear === '1') {
+      changeStateModalContraseña(true)
+    }
+  },[usuarioLogin])
   if (!Boolean(usuarioLogin)) return <SinPermisos />
   if (usuarioLogin.tipo == 'administrativo') {
     return (
@@ -57,6 +65,10 @@ export default function Layout() {
             <Outlet />
           </main>
         </div>
+
+        <Modal isOpen={modalContraseña} style={customStyles}>
+          <ModalRecuperarContraseña />
+        </Modal>
 
         <Modal isOpen={modalMoreDetails} style={customStyles}>
           <ModalDetallesMateriales />

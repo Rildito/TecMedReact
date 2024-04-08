@@ -22,7 +22,7 @@ export default function InformacionPrestamo() {
   }
 
   if (cargandoModal) return <Cargando />
-  
+  console.log(pedidoUrl)
   return (
     <>
       <div>

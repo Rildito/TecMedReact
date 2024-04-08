@@ -12,7 +12,7 @@ export default function AdminLayout() {
             <>
                 <div className='md:flex'>
                     <Sidebar />
-                    <main className='flex-1 h-screen overflow-y-scroll bg-indigo-50 p-3'>
+                    <main className='flex-1 h-svh overflow-y-scroll bg-indigo-50 p-3'>
                         <Outlet />
                     </main>
                 </div>

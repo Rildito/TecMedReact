@@ -36,15 +36,16 @@ export default function FormularioMateria() {
             setMateria(data.data.nombre)
             setMencion(data.data.mention.id)
         }
-    }, [isLoading])
+    }, [isLoading,data])
 
     const handleSubmit = async (e) => {
         let resultado = false
         e.preventDefault()
         const datos = {
             nombre:materia,
-            mencion
+            mencion:String(mencion)
         }
+        console.log(datos)
         if (id) {
             resultado = await editarMateria({ ...datos, id }, setErrores)
             mutate(datos)
@@ -69,9 +70,9 @@ export default function FormularioMateria() {
                     <label className="text-gray-200" htmlFor="user">Mencion</label>
                     <select className='rounded-lg bg-gray-700 mt-2 p-2 focus:border-blue-500 focus:bg-gray-800 focus:outline-none text-white' value={mencion} onChange={e => setMencion(e.target.value)}>
                         <option value={""}>Elige una mencion</option>
-                        <option value={"1"}>Bioimagenología</option>
-                        <option value={"2"}>Laboratorio clínico</option>
-                        <option value={"3"}>Fisioterapia y Kinesiología</option>
+                        <option value="1">Bioimagenología</option>
+                        <option value="2">Laboratorio clínico</option>
+                        <option value="3">Fisioterapia y Kinesiología</option>
                     </select>
                 </div>
 

@@ -28,7 +28,7 @@ export default function MaterialesPrestamos() {
   }
 
 
-  const urls = ['/api/teachers', '/api/subjects', '/api/materials']
+  const urls = ['/api/teachers', '/api/subjects', '/api/materials/student']
   // const { data: [dataDocentes, dataMaterias, dataMateriales], error, isLoading } = useSWR(urls, fetcher)
   const { data, error, isLoading } = useSWR(urls, fetcher)
 

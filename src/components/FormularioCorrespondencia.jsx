@@ -80,11 +80,7 @@ export default function FormularioCorrespondencia() {
     )
 
 
-    const { data, error, isLoading } = useSWR(url, fetcher, {
-        // revalidateIfStale: false,
-        // revalidateOnFocus: false,
-        // revalidateOnReconnect: false
-    })
+    const { data, error, isLoading } = useSWR(url, fetcher, {})
 
     useEffect(() => {
         if (pathname.includes('recibida')) {
@@ -99,12 +95,12 @@ export default function FormularioCorrespondencia() {
             if (id && !isLoading) {
                 setNombre(data.data.nombre)
                 setHojaDeRuta(data.data.hojaDeRuta)
-                setUnidad(data.data.unit.id)
+                setUnidad(data.data?.unit?.id)
                 setDescripcion(data.data.descripcion)
                 setFile(data.data.documento)
                 setReceptor(data.data.receptor || '')
                 setEstado(data.data.estado)
-                setArea(data.data.unit.area)
+                setArea(data.data.unit?.area)
                 setUnidades(data.data.unidades)
             }
         }
@@ -118,7 +114,7 @@ export default function FormularioCorrespondencia() {
     }, [isLoading, data])
 
     if (isLoading) return <Cargando />
-    console.log(isLoading,"finalizao")
+    
     return (
         <>
             <form className="max-w-[500px] w-full mx-auto mt-5 bg-gray-900 p-6 rounded-lg text" onSubmit={handleSubmit} encType='multipart/form-data'>

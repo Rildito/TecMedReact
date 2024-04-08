@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import loginImg from '../../public/images/fondo.jpeg';
+import loginImg from '../public/images/fondo.jpeg';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
@@ -38,7 +38,7 @@ export default function AuthLayout() {
             <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
 
                 <div className="hidden sm:block ">
-                    <img className="w-full h-full object-cover" src={loginImg} alt="loginImg" />
+                    <img className="w-full h-screen object-cover" src={loginImg} alt="loginImg" />
                 </div>
 
                 <div className="bg-white bg-[radial-gradient(circle_500px_at_55%_500px,#C9EBFF,transparent)] flex flex-col justify-center">

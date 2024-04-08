@@ -13,7 +13,8 @@ export default function Encabezado() {
                 <div className='flex gap-2'>
                     {
                         (usuarioLogin.tipo === 'administrativo' ||
-                            usuarioLogin.tipo === 'administrador') ? (
+                            usuarioLogin.tipo === 'administrador' ||
+                            view !== 'activar usuarios') ? (
                             <Link
                                 to={'nuevo'}
                                 className='bg-blue-950 text-center text-white font-black p-3 rounded-lg'

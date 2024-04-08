@@ -1,4 +1,4 @@
-import logoImg from '../../public/images/logoTecMed.png'
+import logoImg from '../public/images/logoTecMed.png'
 import useProyect from '../hooks/useProyect'
 import AdministradorOpciones from './AdministradorOpciones';
 import AdministrativoOpciones from './AdministrativoOpciones'
@@ -6,6 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 import ColaboradorOpciones from './ColaboradorOpciones';
 import EstudianteOpciones from './EstudianteOpciones';
 import Notificaciones from './Notificaciones';
+import { Link } from 'react-router-dom';
 
 export default function Sidebar() {
 
@@ -26,6 +27,12 @@ export default function Sidebar() {
                 <h2 className='text-center font-black text-yellow-500'>DOCUMENTACIÓN INTERNA - CARRERA DE TECNOLOGÍA MÉDICA</h2>
             </div>
             <button type="button" className='w-full bg-red-500 hover:bg-red-600 mt-4 p-3 font-black text-white text-sm' onClick={logout}>Cerrar Sesion</button>
+            {
+                usuarioLogin.tipo !== 'administrador' && (
+                    <Link to={`/${usuarioLogin.tipo}/editarDatos`} className='w-full block text-center bg-blue-500 hover:bg-blue-600 mt-4 p-3 font-black text-white text-sm'>Editar datos</Link>
+                )
+            }
+           
             <div className='mt-5 p-2 flex items-center gap-1 justify-center border border-x-0 border-yellow-500'>
                 <div className='relative'>
                     <img

@@ -20,6 +20,7 @@ const ProyProvider = ({ children }) => {
     const [menuMateriales, setMenuMateriales] = useState(false);
     const [modalMoreDetails, setModalMoreDetails] = useState(false);
     const [modalColaboradores, setModalColaboradores] = useState(false);
+    const [modalContraseña, setModalContraseña] = useState(false);
     const [modalRespuesta, setModalRespuesta] = useState(false);
     const [modalDocumentoGeneradoCorrespondencia, setModalDocumentoGeneradoCorrespondencia] = useState(false);
     const [modalNavegacion, setModalNavegacion] = useState(false);
@@ -76,6 +77,9 @@ const ProyProvider = ({ children }) => {
         setModalRespuesta(!modalRespuesta)
     }
 
+    const changeStateModalContraseña = () => {
+        setModalContraseña(!modalContraseña)
+    }
     const changeViewMenu = () => {
         setMenuMateriales(!menuMateriales)
     }
@@ -169,7 +173,7 @@ const ProyProvider = ({ children }) => {
         setCargando(true);
         const token = localStorage.getItem('AUTH_TOKEN');
         try {
-            const { data } = await clienteAxios.post(`/api/correspondences/recover/${id}`,{}, {
+            const { data } = await clienteAxios.post(`/api/correspondences/recover/${id}`, {}, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
@@ -482,7 +486,7 @@ const ProyProvider = ({ children }) => {
         } catch (error) {
             console.log(error)
             setErrores(Object.values(error?.response?.data?.errors || []))
-            document.getElementById('formRegistro').scrollIntoView({top:0, behavior:'smooth'})
+            document.getElementById('formRegistro').scrollIntoView({ top: 0, behavior: 'smooth' })
         } finally {
             setCargando(false);
         }
@@ -523,6 +527,46 @@ const ProyProvider = ({ children }) => {
 
         } catch (error) {
             console.log(error)
+        } finally {
+            setCargando(false);
+        }
+    }
+
+    const resetearContraseñaUsuario = async (id) => {
+        const token = localStorage.getItem('AUTH_TOKEN')
+        try {
+            setCargando(true);
+            const { data } = await clienteAxios.put(`/api/users/recover_password/${id}`,{}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            return data.message
+
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setCargando(false);
+        }
+    }
+
+    const actualizarContraseña = async (datos, setErrores) => {
+        const token = localStorage.getItem('AUTH_TOKEN')
+        try {
+            setCargando(true);
+            const { data } = await clienteAxios.put(`/api/users/update_password`, datos, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            toast.success('Contraseña actualizada correctamente')
+            const informacionEncriptada = CryptoJS.AES.encrypt(JSON.stringify(data.user),'secret_key')
+            localStorage.setItem('usuario', informacionEncriptada)
+            setUsuarioLogin(data.user)
+            return true
+        } catch (error) {
+            console.log(error)
+            setErrores(Object.values(error?.response?.data?.errors || []))
         } finally {
             setCargando(false);
         }
@@ -902,7 +946,7 @@ const ProyProvider = ({ children }) => {
 
     useEffect(() => {
         if (localStorage.getItem('usuario')) {
-            const informacionDesencriptada = CryptoJS.AES.decrypt(localStorage.getItem('usuario'),'secret_key')
+            const informacionDesencriptada = CryptoJS.AES.decrypt(localStorage.getItem('usuario'), 'secret_key')
             const usuarioJSON = informacionDesencriptada.toString(CryptoJS.enc.Utf8)
             setUsuarioLogin(JSON.parse(usuarioJSON))
         }
@@ -924,6 +968,7 @@ const ProyProvider = ({ children }) => {
             modalCajaChicaDocumento,
             modalDocumentoGeneradoCorrespondencia,
             modalCorrespondencia,
+            modalContraseña,
             modalColaboradores,
             modalMaterial,
             modalMoreDetails,
@@ -939,6 +984,7 @@ const ProyProvider = ({ children }) => {
             usuarioCreador,
             view,
             activarUsuario,
+            actualizarContraseña,
             agregarColaborador,
             aumentarPedido,
             changeView,
@@ -961,6 +1007,7 @@ const ProyProvider = ({ children }) => {
             changeStateModalDocumentoGenerado,
             changeStateModalMaterial,
             changeStateModalRespuesta,
+            changeStateModalContraseña,
             changeViewMenu,
             confirmarPrestamo,
             disminuirPedido,
@@ -991,6 +1038,7 @@ const ProyProvider = ({ children }) => {
             obtenerUnidades,
             realizarPedido,
             recuperarCorrespondencia,
+            resetearContraseñaUsuario,
             setCargando,
             setCorrespondenciasNotificacion,
             setFechasGasto,
